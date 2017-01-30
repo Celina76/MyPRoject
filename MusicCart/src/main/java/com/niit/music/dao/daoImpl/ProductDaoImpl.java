@@ -2,6 +2,7 @@ package com.niit.music.dao.daoImpl;
 
 import java.io.Serializable;
 
+
 import java.util.List;
 
 import org.hibernate.Session;
@@ -14,13 +15,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.niit.model.ProductInfo;
 import com.niit.music.dao.ProductDao;
+/*enabling transaction and for creating bean in repository @Repository is used**/
 @EnableTransactionManagement
 @Repository
+/*creating the class implementing methods in interface using keyword implements**/
 public class ProductDaoImpl implements ProductDao {
+	/*autowiring the session factory and creating the refernces variable**/
 @Autowired
 SessionFactory ss;
+/*transactional enabling to store in database**/
 @Transactional
 @Override
+/*implementing method for save the details**/
 public int add(ProductInfo product) {
 	
 	
@@ -35,6 +41,7 @@ public int add(ProductInfo product) {
 }
 @Transactional
 @Override
+/* implementing for the method list**/
 public List getList() {
 	Session session = ss.openSession();
 	 List list = session.createQuery("from ProductInfo").list();
@@ -46,6 +53,7 @@ public List getList() {
 }
 @Transactional
 @Override
+/*implementing method for getting row by id**/
 public ProductInfo getRowById(int id) {
 	
 	 Session session = ss.openSession();
@@ -56,6 +64,7 @@ public ProductInfo getRowById(int id) {
 }
 @Transactional
 @Override
+/*implementing method for updating the details**/
 public int updateRow(ProductInfo product) {
 		Session session = ss.openSession();
 	  Transaction tx = session.beginTransaction();
@@ -67,6 +76,7 @@ public int updateRow(ProductInfo product) {
 }
 @Transactional
 @Override
+/*implementing method for deleting the row**/
 public int deleteRow(int id) {
 	
 	Session session = ss.openSession();

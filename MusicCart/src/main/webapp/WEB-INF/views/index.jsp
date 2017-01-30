@@ -24,7 +24,7 @@
  <%@ include file="header.jsp" %>
 	
 	
-	<hr> 
+	
 	
   <div>
   <div id="myCarousel" class="carousel slide" data-ride="carousel">

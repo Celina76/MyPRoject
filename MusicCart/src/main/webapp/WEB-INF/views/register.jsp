@@ -5,6 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -23,73 +24,133 @@ body {
 </style>
 </head>
 <body>
-	<%@ include file="header.jsp"%>
+	<%@ include file="header.jsp"%> 
 
 	<div class="container">
-		<form:form class="form-horizontal" role="form " action="RegisterIns"
-			method="POST" modelAttribute="user">
+		<form:form class="form-horizontal" modelAttribute="user">
+<%-- 	<a href="${flowExecutionUrl}&_eventId_home">Home</a> --%>
 			<div class="form-group">
-				<label class="col-md-4 control-label" for="textinput">First
-					Name</label>
+				<form:label class="col-md-4 control-label" for="textinput" path="firstname">First
+					Name</form:label>
 				<div class="col-md-4">
-					<input type="text" name="firstname"
-						placeholder="Insert your First Name" class="form-control input-md"
-						id="UserInfo-firstname"> <span class="help-block">
+					<form:input type="text" name="firstname"
+						placeholder="Insert your First Name" class="form-control input-md" required="true"
+						path="firstname"/> <span class="help-block">
 					</span>
+					<!-- to display validation messages -->
+					<c:forEach
+						items="${flowRequestContext.messageContext.getMessagesBySource('firstname')}"
+						var="err">
+						<div>
+							<span>${err.text}</span>
+						</div>
+					</c:forEach>
+					
+					<br />
+
 				</div>
 			</div>
 
 			<!-- Text input-->
 			<div class="form-group">
-				<label class="col-md-4 control-label" for="textinput">Last
-					Name</label>
+				<form:label class="col-md-4 control-label" for="textinput" path="lastname">Last
+					Name</form:label>
 				<div class="col-md-4">
-					<input type="text" name="lastname"
+					<form:input type="text" name="lastname"
 						placeholder="Insert your Last Name" class="form-control input-md"
-						id="UserInfo-lastname"> <span class="help-block">
-					</span>
+						path="lastname"/> <span class="help-block"> </span>
+					<!-- to display validation messages -->
+					<c:forEach
+						items="${flowRequestContext.messageContext.getMessagesBySource('lastname')}"
+						var="err">
+						<div>
+							<span>${err.text}</span>
+						</div>
+					</c:forEach>
+					<br />
+
 				</div>
+
 			</div>
 			<!-- Text input-->
 			<div class="form-group">
-				<label class="col-md-4 control-label" for="textinput">UserName</label>
+				<form:label class="col-md-4 control-label" for="textinput" path="username">UserName</form:label>
 				<div class="col-md-4">
-					<input type="text" name="username" placeholder="insert UserName"
-						class="form-control input-md" id="UserInfo-username"> <span
+					<form:input type="text" name="username" placeholder="Insert  your UserName"
+						class="form-control input-md" path="username"/> <span
 						class="help-block"> </span>
+					<!-- to display validation messages -->
+					<c:forEach
+						items="${flowRequestContext.messageContext.getMessagesBySource('username')}"
+						var="err">
+						<div>
+							<span>${err.text}</span>
+						</div>
+					</c:forEach>
+					<br />
+
 				</div>
 			</div>
 
 			<!-- Text input-->
 			<div class="form-group">
-				<label class="col-md-4 control-label" for="textinput">Email</label>
+				<form:label class="col-md-4 control-label" for="textinput" path="email">Email</form:label>
 				<div class="col-md-4">
-					<input type="email" name="email" placeholder="Insert your Email"
-						class="form-control input-md" id="UserInfo-email"> <span
+					<form:input type="email" name="email" placeholder="Insert your Email"
+						class="form-control input-md" path="email"/> <span
 						class="help-block"> </span>
+					<!-- to display validation messages -->
+					<c:forEach
+						items="${flowRequestContext.messageContext.getMessagesBySource('email')}"
+						var="err">
+						<div>
+							<span>${err.text}</span>
+						</div>
+					</c:forEach>
+					<br />
+
 				</div>
 			</div>
 
 			<!-- Text input-->
 			<div class="form-group">
-				<label class="col-md-4 control-label" for="textinput">Password</label>
+				<form:label class="col-md-4 control-label" for="textinput" path="password">Password</form:label>
 				<div class="col-md-4">
-					<input type="password" name="password"
+					<form:input type="password" name="password"
 						placeholder="Insert your Password" class="form-control input-md"
-						id="UserInfo-password"> <span class="help-block">
-					</span>
+						path="password"/> <span class="help-block"> </span>
+					<!-- to display validation messages -->
+					<c:forEach
+						items="${flowRequestContext.messageContext.getMessagesBySource('password')}"
+						var="err">
+						<div>
+							<span>${err.text}</span>
+						</div>
+					</c:forEach>
+					<br />
+
 				</div>
 			</div>
 
 			<!-- Text input-->
 			<div class="form-group">
-				<label class="col-md-4 control-label" for="textinput">Confirm
-					Password</label>
+				<form:label class="col-md-4 control-label" for="textinput" path="password">Confirm
+					Password</form:label>
 				<div class="col-md-4">
-					<input type="password" name="confirmpwd"
+					<form:input type="password" name="confirmpwd"
 						placeholder="Confirm your Password" class="form-control input-md"
-						id="UserInfo-confirmpwd"> <span class="help-block">
+						path="confirmpwd"/> <span class="help-block">
 					</span>
+					<!-- to display validation messages -->
+					<c:forEach
+						items="${flowRequestContext.messageContext.getMessagesBySource('confirmpwd')}"
+						var="err">
+						<div>
+							<span>${err.text}</span>
+						</div>
+					</c:forEach>
+					<br />
+
 				</div>
 			</div>
 
@@ -97,12 +158,15 @@ body {
 			<div class="form-group">
 				<label class="col-md-4 control-label" for="singlebutton"> </label>
 				<div class="col-md-4">
-					<button class="btn btn-success" type="submit" name="action">Register</button>
+					<!-- 					<button class="btn btn-success" type="submit" value="submit">Register</button> -->
+					<form:button class="btn btn-success" input name="_eventId_submit" type="submit" value="Submit" >Register</form:button><br>
+					<input type="hidden" name="${_csrf.parameterName}"
+						value="${_csrf.token}" />
 				</div>
 			</div>
 		</form:form>
 	</div>
 
-	<%@ include file="footer.jsp"%>
+	<%@ include file="footer.jsp"%> 
 </body>
 </html>

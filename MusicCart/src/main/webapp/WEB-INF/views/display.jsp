@@ -15,10 +15,11 @@
 <title>Insert title here</title>
 </head>
 <body>
+<%@ include file="header.jsp"%> 
 <div class="row">
  <c:forEach items="${List}" var="product"> 
 <div class="col-xs-3">
-<img src="<c:url value="E:/apache-tomcat-8.0.33/resources/image/${product.product_name}.jpg"/>" class="img-responsive">
+<img src="<c:url value="/resources/images/${product.product_name}.jpg"/>" class="img-responsive">
  <div class="caption"> 
  <div class="row"> 
  <div class="font-effect-wallpaper" class="col-md-12 col=xs-12" style="color:black"> 
@@ -38,4 +39,5 @@ ${product.product_name }
 </c:forEach> 
 </div>
 </body>
+<%@ include file="footer.jsp"%> 
 </html>
