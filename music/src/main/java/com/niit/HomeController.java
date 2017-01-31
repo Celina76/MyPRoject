@@ -1,14 +1,17 @@
 package com.niit;
 
-
-
 import java.util.Map;
 
 
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,77 +23,68 @@ import org.springframework.web.servlet.ModelAndView;
 import com.niit.model.UserInfo;
 import com.niit.services.DataServices;
 
-@Controller
+@Controller//which mark the class as controller.which automatically imported dependency injection
 public class HomeController {
-	@Autowired
+	@Autowired   //Autowiring the service class and model class
 	DataServices dataservices;
 	UserInfo user;
 
-	@RequestMapping("/")
+	@RequestMapping(value = { "/", "/index" })//Setting url mapping for landing page
 	public String getIndex() {
 		System.out.println("home page");
-		
+
 		return "index";
 	}
 
-	
-	
-	//Spring Security see this :
-		@RequestMapping(value = "/sign", method = RequestMethod.POST)
-		public ModelAndView login(@RequestParam(value = "error", required = false) String error,@RequestParam(value = "logout", required = false) String logout,@ModelAttribute UserInfo user, BindingResult result) {
-
-			ModelAndView model = new ModelAndView();
-			if (error != null) {
-				model.addObject("error", "Invalid username and password!");
-			}
-
-			if (logout != null) {
-				model.addObject("msg", "You've been logged out successfully.");
-			}
-			model.setViewName("sign");
-
-			return model;
-
+	@RequestMapping(value = { "/login", "/userLogin" }, method = RequestMethod.GET)//Setting url mapping foe login page 
+	public ModelAndView getlog(@RequestParam(required = false) String authfailed, String logout, String denied) {
+		String message = "";
+		if (authfailed != null) {
+			message = "Invalid username of password, try again !";
+			return new ModelAndView("error", "message", message);
+		} else if (logout != null) {
+			message = "Logged Out successfully, login again to continue !";
+			new ModelAndView("index", "message", message);
+		} else if (denied != null) {
+			message = "Access denied for this user !";
+			new ModelAndView("403", "message", message);
 		}
-		//for 403 access denied page
-		@RequestMapping(value = "/403", method = RequestMethod.GET)
-		public ModelAndView accesssDenied() {
 
-		  ModelAndView model = new ModelAndView();
-
-		  //check if user is login
-		  Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		  if (!(auth instanceof AnonymousAuthenticationToken)) {
-			UserInfo user = (UserInfo) auth.getPrincipal();
-			model.addObject("username", user.getUsername());
-		  }
-
-		  model.setViewName("403");
-		  return model;
-
-		}
-	@RequestMapping(value = "/register")
-	public String getRegister(Map<String, Object> map) {
-		UserInfo user = new UserInfo();
-		map.put("user", user);
-		System.out.println("In register page");
-		return "register";
+		return new ModelAndView("sign", "message", message);
 	}
 
-	@RequestMapping("/RegisterIns")
-	public String doRegister(@ModelAttribute UserInfo user, BindingResult result, @RequestParam String action,
-			Map<String, Object> map) {
-		
-	
-		dataservices.insertRow(user);
-return "register";
+	@RequestMapping(value = "/logout")//setting url mapping for logout
+	public String logoutPage(HttpServletRequest request, HttpServletResponse response) {
+		System.out.println("in login logout method");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth != null) {
+			new SecurityContextLogoutHandler().logout(request, response, auth);
+		}
+		HttpSession session=request.getSession();
+		session.invalidate();
+		return "redirect:index?logout";
 	}
-	
-	
-					
-				
-				
-				
-				
-				}
-		
+
+	@RequestMapping("/403")//setting url mapping for access denied page
+	public String ge403denied() 
+	{
+		return "403";
+	}
+
+//	@RequestMapping(value = "/register")
+//	public String getRegister(Map<String, Object> map) {
+//		UserInfo user = new UserInfo();
+//		map.put("user", user);
+//		System.out.println("In register page");
+//		return "register";
+//	}
+//
+//	@RequestMapping("/RegisterIns")
+//	public String doRegister(@ModelAttribute UserInfo user, BindingResult result, @RequestParam String action,
+//			Map<String, Object> map) {
+//
+//		dataservices.insertRow(user);
+//		return "register";
+//	}
+
+}

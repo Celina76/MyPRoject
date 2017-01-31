@@ -2,15 +2,19 @@ package com.niit;
 
 import java.io.BufferedOutputStream;
 
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,56 +27,96 @@ import com.niit.services.ProductService;
 @Controller
 public class ProductController {
 	@Autowired
-	ProductService pservice;
+	ProductService pservice;//Adding service class of product with help of autowiring
 	ProductInfo productObject=null;
-	@RequestMapping("/product")
-	public  ModelAndView  getProductPage(@ModelAttribute ProductInfo product, BindingResult result) {
+	ServletContext servletContext;//including servlet context foe uploading file
+	@RequestMapping("/product")//url mapping is done for product
+	public  ModelAndView  getProductPage( @ModelAttribute ProductInfo product,BindingResult result,Model model) {
 System.out.println("view product adding page");
+
+model.addAttribute("product",new ProductInfo());
 		return new  ModelAndView("Product");
 	}
 	
 
-	@RequestMapping("/productadd")
-	public  String getProduct(@ModelAttribute ProductInfo product, BindingResult result) {
-     pservice.add(product);
+	@RequestMapping("/productadd")//url mapping for adding the product in database
+	public  ModelAndView getProduct(@Valid @ModelAttribute("product")ProductInfo product,BindingResult result,HttpServletRequest hm,Model model) {
+    
+     servletContext =hm.getServletContext();
+     model.addAttribute("product",new ProductInfo());
+     if (result.hasErrors()) {
+    	 
+    	 System.out.println("validation in add product");
+       	 return new ModelAndView("Product");  
+       	}
      
-         if (!product.getImage().isEmpty()) {
+     else
+    	 {
+    	 if (!product.getImage().isEmpty())
+    	 
+         {System.out.println("get image");
 			try {
+				 System.out.println("get image "+servletContext);
 				byte[] bytes = product.getImage().getBytes();
-
+				System.out.println("get image "+servletContext.getRealPath("/"));
 				// Creating the directory to store file
-				String rootPath = System.getProperty("catalina.home");
-				File dir = new File(rootPath + File.separator + "resources/image");
+				String rootPath = servletContext.getRealPath("/");
+//				String rootPath = System.getProperty("catalina.home");
+				System.out.println("get image "+rootPath);
+				File dir = new File(rootPath + File.separator + "resources/images");
 				if (!dir.exists())
-					dir.mkdirs();
-
+					{dir.mkdirs();
+			 }else{
+	    		 System.out.println("filee "+dir.exists());
 				// Create the file on server
 				File serverFile = new File(dir.getAbsolutePath()
-						+ File.separator + product.getProduct_name()+".jpg");
+						+ File.separator +product.getProduct_name()+".jpg");
+				System.out.println(serverFile);
 				BufferedOutputStream stream = new BufferedOutputStream(
 						new FileOutputStream(serverFile));
 				stream.write(bytes);
 				stream.close();
-
-				System.out.println("Server File Location="
-						+ serverFile.getAbsolutePath());
-
-				return "You successfully uploaded file=" + product.getProduct_name();
-			} catch (Exception e) {
-				return "You failed to upload " + product.getProduct_name() + " => " + e.getMessage();
+				System.out.println("server file location"+serverFile.getAbsolutePath());
+				 pservice.add(product);
+	    	 }
+				return new ModelAndView("redirect:list");
+				} catch (Exception e) {
+					e.printStackTrace();
+					return new ModelAndView("redirect:list");
+				}
+			} else {
+				return new ModelAndView("redirect:list");
+			
 			}
-		} else {
-			return "You failed to upload " + product.getProduct_name()
-					+ " because the file was empty.";
-		}
+		}}
+
+//				// Create the file on server
+//				File serverFile = new File(dir.getAbsolutePath()
+//						+ File.separator + product.getProduct_name()+".jpg");
+//				BufferedOutputStream stream = new BufferedOutputStream(
+//						new FileOutputStream(serverFile));
+//				stream.write(bytes);
+//				stream.close();
+//
+//				System.out.println("Server File Location="
+//						+ serverFile.getAbsolutePath());
+//
+//				return "You successfully uploaded file=" + product.getProduct_name();
+//			} catch (Exception e) {
+//				return "You failed to upload " + product.getProduct_name() + " => " + e.getMessage();
+//			}
+//		} else {
+//			return "You failed to upload " + product.getProduct_name()
+//					+ " because the file was empty.";
+//		}
 	
 				
         
 		
 				
 //		return "redirect:list";
-	}
-	@RequestMapping("/display")
+	
+	@RequestMapping("/display")//url mapping for displaying the image 
 	public ModelAndView viewImg(@ModelAttribute ProductInfo product,Map<String, Object> map)
 	{
 		ModelAndView mv=new ModelAndView("display");
@@ -83,7 +127,7 @@ System.out.println("view product adding page");
 		return mv;
 	}
 	
-	@RequestMapping("/list")
+	@RequestMapping("/list")//url mapping for getting list of product details
 	 public ModelAndView getList() {
 	  List list = pservice.getList();
 	  System.out.println("product list");
@@ -91,13 +135,13 @@ System.out.println("view product adding page");
 	 }
 
 
-	 @RequestMapping("/delete")
+	 @RequestMapping("/delete")//url mapping for deleting the products
 	 public ModelAndView deleteProduct(@RequestParam int id) {
 	  pservice.deleteRow(id);
 	  System.out.println("delete product");
 	  return new ModelAndView("redirect:list");
 	 }
- @RequestMapping("/edit")
+ @RequestMapping("/edit")//url mapping for editing the products
 	 public ModelAndView editProduct(@RequestParam int id,
 	   @ModelAttribute ProductInfo product, BindingResult result,Map<String, Object> map) {
 	   productObject = pservice.getRowById(id);
@@ -105,7 +149,7 @@ System.out.println("view product adding page");
 	   System.out.println("edit product");
 	  return new ModelAndView("edit", "productObject", productObject);
 	 }
-	 @RequestMapping("/update")
+	 @RequestMapping("/update")//url mapping for update
 	 public ModelAndView updateProduct(@ModelAttribute ProductInfo product, BindingResult result) {
 		 int id = productObject.getId();
 		 System.out.println(id);
@@ -114,9 +158,4 @@ System.out.println("view product adding page");
 		 System.out.println("update product");
 	  return new ModelAndView("redirect:list");
 	 }
-
-
-
-
-
 }
