@@ -12,6 +12,6 @@
                     You do not have permission to access this page!</h2>
 		</c:otherwise>
 	</c:choose>
-
+Click here for<a href="<c:url value="/login" />"> Login</a>
 </body>
 </html>
