@@ -1,10 +1,15 @@
 package com.niit.services;
 
-import com.niit.model.UserInfo;
+import java.util.List;
 
+import com.niit.model.UserInfo;
+/*creating interface for service class**/
 public interface DataServices {
-	public  void insertRow(UserInfo user) ;
-			
-	
+	/*initialize the method**/
+	public void insertRow(UserInfo user);
+
+	public List<UserInfo> getUser_id();
+
+	public UserInfo getByUserName(String username, String password);
 
 }
