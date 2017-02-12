@@ -1,5 +1,6 @@
 package com.niit;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.niit.model.CategoryInfo;
 import com.niit.model.ProductInfo;
 import com.niit.model.UserInfo;
+import com.niit.music.dao.UserDao;
 import com.niit.services.CategoryService;
 import com.niit.services.DataServices;
 import com.niit.services.ProductService;
@@ -38,9 +40,14 @@ public class HomeController {
 	CategoryService cs;
 	@Autowired
 	ProductService ps;
+	@Autowired
+	UserDao us;
 	@RequestMapping(value = { "/", "/index" })//Setting url mapping for landing page
 	public String getIndex(Map<String, Object> map ,@ModelAttribute CategoryInfo category) {
 		System.out.println("home page");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		 String username = auth.getName();  	 		 
+		 List<UserInfo> userDetail = us.getUser(username);
 		map.put("category", category);
 		map.put("categoryList", cs.getAllCategory());
 		System.out.println("getting values");

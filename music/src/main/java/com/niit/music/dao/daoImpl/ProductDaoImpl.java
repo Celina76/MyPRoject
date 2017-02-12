@@ -66,13 +66,18 @@ public ProductInfo getRowById(int id) {
 @Override
 /*implementing method for updating the details**/
 public int updateRow(ProductInfo product) {
-		Session session = ss.openSession();
-	  Transaction tx = session.beginTransaction();
-	  session.saveOrUpdate(product);
-	  tx.commit();
+	Session session = ss.openSession();
+//	  Transaction tx = session.beginTransaction();
+//	  session.saveOrUpdate(product);
+//	  tx.commit();
+//	  Serializable id = session.getIdentifier(product);
+//	  session.close();
+//	  return (Integer) id;
+	  ss.getCurrentSession().update(product);
 	  Serializable id = session.getIdentifier(product);
-	  session.close();
+  session.close();
 	  return (Integer) id;
+	
 }
 @Transactional
 @Override

@@ -9,8 +9,6 @@ public interface UserDao {
 	public void insertRow(UserInfo user);
 	public List<UserInfo> getUser_id();
 	public UserInfo getByUserName(String username, String password);
-	//public List<UserInfo> getByUserName(String username);
-	public List<UserInfo> getUserByName(String username);
-	
-
+	public List<UserInfo> getUser(String username);
+	public void edit(UserInfo user);
 }

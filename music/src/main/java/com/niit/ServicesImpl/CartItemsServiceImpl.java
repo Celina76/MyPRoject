@@ -23,20 +23,13 @@ public class CartItemsServiceImpl implements CartItemsService{
 		cid.add(cartitems);
 	}
 	@Transactional
-	@Override
-	public void edit(CartItems cartitems) {
-		// TODO Auto-generated method stub
-		cid.edit(cartitems);
-	}
-	@Transactional
-	@Override
 	public void delete(int cartItems_id) {
 		// TODO Auto-generated method stub
 		cid.delete(cartItems_id);
 	}
 	@Transactional
 	@Override
-	public List getAllCartItems() {
+	public List<CartItems> getAllCartItems() {
 		// TODO Auto-generated method stub
 		return cid.getAllCartItems();
 	}
@@ -57,6 +50,13 @@ public class CartItemsServiceImpl implements CartItemsService{
 	public int cartLength() {
 		// TODO Auto-generated method stub
 		return cid.cartLength();
+	}
+	@Transactional
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<CartItems> getbyuserid(int user_id) {
+		// TODO Auto-generated method stub
+		return cid.getbyid(user_id);
 	}
 
 }

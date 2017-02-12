@@ -65,13 +65,19 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	@Transactional
-	public List<UserInfo> getUserByName(String username) {
-		// TODO Auto-generated method stub
-		String Query = "from USERINFO where username='" + username + "'";
-		
-		List<UserInfo> productList = sessionFactory.getCurrentSession().createQuery(Query).list();
+	public List<UserInfo> getUser(String username) {
+		  String Query="from UserInfo where username='"+username+"'";
+		  @SuppressWarnings("unchecked")
+			  List<UserInfo> productList = sessionFactory.getCurrentSession().createQuery(Query).list();
+			 
+			  return productList;
+	}
 
-		return productList;
+	@Override
+	@Transactional
+	public void edit(UserInfo user) {
+		// TODO Auto-generated method stub
+		sessionFactory.getCurrentSession().update(user);
 	}
 
 }

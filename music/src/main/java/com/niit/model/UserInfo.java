@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -42,6 +43,17 @@ public class UserInfo implements Serializable //creating class for user details 
 	private String confirmpwd;
 	@Column
 	private boolean enabled;
+	@OneToOne
+	@JoinColumn(name="cart_id")
+	private Cart cart;
+
+	public Cart getCart() {
+		return cart;
+	}
+
+	public void setCart(Cart cart) {
+		this.cart = cart;
+	}
 //getter ans setter method for all the fields
 	public boolean isEnabled() {
 		return enabled;

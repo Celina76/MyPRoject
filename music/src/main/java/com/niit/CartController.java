@@ -40,6 +40,7 @@ public class CartController {
 	
 	public String AddtoCart(@RequestParam("cart") int id, Map<String, Object> map, ProductInfo product,HttpSession session) 
 	{
+		
 		CartItems cart = new CartItems();
 		ProductInfo p1 = ps.getRowById(id);	
 		
@@ -64,9 +65,19 @@ public class CartController {
 			}
 		}
 		
+
 		cart.setQuantity(1);//setter method of quantity in cartitems table
 		cart.setTotalPrice(p1.getPrice());
 		cart.setId_fk(p1);//foreign key of Productid
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String username = auth.getName();
+System.out.println(username);
+		List<UserInfo> userDetail = us.getUser(username);
+		//System.out.println("It is entering into the shipping address block");
+
+		for (int i = 0; i < userDetail.size(); i++) {
+			//System.out.println("It is entering into block which is to add user id");
+			cart.setUser_fk(userDetail.get(i));}
 		cartItemsService.add(cart);//add the quantity,total,productid in cartitems table using the cart object
 		map.put("product", p1);
 		map.put("cartList", cartItemsService.getAllCartItems());
@@ -74,6 +85,7 @@ public class CartController {
 		
 		map.put("categoryList", cs.getAllCategory());
 		map.put("productList", ps.getList());
+		
 		return "cart";
 
 	}
@@ -84,37 +96,7 @@ public class CartController {
 		session.setAttribute("cartlength", cartItemsService.cartLength());
 		return "cart";
 	}
-//	@RequestMapping("/cart")//when click cart in header
-//	public String cart(Map<String,Object> map,HttpSession session)
-//	{
-//	
-//		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//		 String username = auth.getName();  	 		 
-//		 List<UserInfo> userDetail = us.getByUserName(username);//user details are stored in userDetail object		
-//	
-//	 List<Cartitems> crt=cs.getbyuserid(u.get(0).getUser_id());
-//		 map.put("cartList", crt);
-//		 session.setAttribute("cartlength", cartItemsService.cartLength(UserInfo.get(0).getUser_id()));
-//	     return "cart";
-//	
-//	}
-//	@RequestMapping("/remove")
-//	public String remove(@RequestParam("del")int id,Map<String,Object> map,HttpSession session)
-//	{
-//		 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//		 String username = auth.getName();  	 		 
-//		 List<User> userDetail = ud.getUserByName(username);		
-//
-//		cs.delete(id);	
-//		
-//		List<Cartitems> crtss=cs.getbyuserid(userDetail.get(0).getUserid());
-//		
-//		map.put("cartList", crtss);
-//			
-//		session.setAttribute("cartlength", cs.cartLength(userDetail.get(0).getUserid()));	
-//		return "cart" ;
-//		
-//	}
+
 	@RequestMapping("delete/cart/{cartItems_id}")
 	public String delcart(@PathVariable("cartItems_id")int id,ModelMap model,HttpSession session)
 	{	

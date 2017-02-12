@@ -98,7 +98,7 @@
 										<td> </td>
 										<td> </td>
 										<td> </td>
-										<td><a href="<c:url value="/viewall"/>"><button
+										<td><a href="<c:url value="/display"/>"><button
 													type="button" class="btn btn-default">
 													<span class="glyphicon glyphicon-shopping-cart"></span>
 													Continue Shopping

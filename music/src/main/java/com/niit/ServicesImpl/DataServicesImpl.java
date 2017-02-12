@@ -36,5 +36,10 @@ public class DataServicesImpl implements DataServices {
 		// TODO Auto-generated method stub
 		return userDao.getByUserName(username, password);
 	}
+	@Override
+	public void edit(UserInfo user) {
+		// TODO Auto-generated method stub
+		userDao.edit(user);
+	}
 
 }

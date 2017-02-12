@@ -34,9 +34,9 @@ public class Shipping implements Serializable {
 	private String pincode;
 	private String mob_no;
 	// (cascade=CascadeType.ALL)
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne
 	@JoinColumn(name = "User_id")
-	private UserInfo user;
+	private UserInfo user_fk;
 
 	public int getS_id() {
 		return s_id;
@@ -78,12 +78,12 @@ public class Shipping implements Serializable {
 		this.mob_no = mob_no;
 	}
 
-	public UserInfo getUser() {
-		return user;
+	public UserInfo getUser_fk() {
+		return user_fk;
 	}
 
-	public void setUser(UserInfo user) {
-		this.user = user;
+	public void setUser(UserInfo user_fk) {
+		this.user_fk = user_fk;
 	}
 
 	public String getCity() {

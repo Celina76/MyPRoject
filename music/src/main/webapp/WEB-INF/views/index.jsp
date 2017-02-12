@@ -18,7 +18,7 @@
  <%@ include file="header.jsp" %>
 	
   <div class="container">
-  <div id="myCarousel" class="carousel slide" data-ride="carousel">
+  <div id="myCarousel" class="carousel slide carousel-fade" data-ride="carousel">
   <!-- Indicators -->
   <ol class="carousel-indicators">
     <li data-target="#myCarousel" data-slide-to="0" class="active"></li>

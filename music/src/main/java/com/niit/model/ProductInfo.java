@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity // for crating table in database
-@Table(name = "product") // mention name for the table
+@Table(name = "prod") // mention name for the table
 public class ProductInfo implements Serializable // creating the class for
 													// product details
 													// implementing serializable

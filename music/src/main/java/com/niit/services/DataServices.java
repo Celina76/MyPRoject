@@ -11,5 +11,6 @@ public interface DataServices {
 	public List<UserInfo> getUser_id();
 
 	public UserInfo getByUserName(String username, String password);
+	public void edit(UserInfo user);
 
 }

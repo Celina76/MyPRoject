@@ -38,6 +38,7 @@ private ProductDao pd;
 	@Override
     @Transactional
 	public int updateRow(ProductInfo product) {
+		System.out.println("service of updating");
 	return	pd.updateRow(product);
 		
 	}

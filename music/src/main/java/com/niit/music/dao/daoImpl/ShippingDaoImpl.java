@@ -1,5 +1,7 @@
 package com.niit.music.dao.daoImpl;
 
+import java.util.List;
+
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -24,5 +26,12 @@ public class ShippingDaoImpl implements ShippingDao {
 		// TODO Auto-generated method stub
 	session.getCurrentSession().update(ship);
 	}
-
+@Transactional
+@Override
+public List getbyid(int user_id) {
+	String query="from Shipping where user_id=:output";
+	List image=session.getCurrentSession().createQuery(query).setParameter("output",user_id).list();
+	return image;
 }
+}
+

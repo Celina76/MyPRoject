@@ -2,12 +2,14 @@ package com.niit.model;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.springframework.stereotype.Component;
@@ -16,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Component
-@Table(name="c")
+@Table(name="cartitems")
 public class CartItems implements Serializable{
 
 	/**
@@ -30,7 +32,11 @@ public class CartItems implements Serializable{
 	@JoinColumn(name = "cart_id")
 	@JsonIgnore
 	private Cart cart_id1;
-	
+	@OneToOne
+	@JsonIgnore
+	@JoinColumn(name="User_id")
+	private UserInfo user_fk;
+	@Column
 	private int quantity;
 	@ManyToOne
 	@JoinColumn(name = "id")
@@ -40,13 +46,14 @@ public class CartItems implements Serializable{
 	public CartItems(){
 		
 	}
-	public CartItems(int cartItems_id, Cart cart_id1, int quantity, ProductInfo id_fk, int totalPrice) {
+	public CartItems(int cartItems_id, Cart cart_id1, int quantity, ProductInfo id_fk, int totalPrice,UserInfo user_fk) {
 		super();
 		this.cartItems_id = cartItems_id;
 		this.cart_id1 = cart_id1;
 		this.quantity = quantity;
 		this.id_fk = id_fk;
 		this.totalPrice = totalPrice;
+		this.user_fk=user_fk;
 	}
 	public int getCartItems_id() {
 		return cartItems_id;
@@ -78,4 +85,11 @@ public class CartItems implements Serializable{
 	public void setTotalPrice(int totalPrice) {
 		this.totalPrice = totalPrice;
 	}
+	public UserInfo getUser_fk() {
+		return user_fk;
+	}
+	public void setUser_fk(UserInfo user_fk) {
+		this.user_fk = user_fk;
+	}
+	
 }

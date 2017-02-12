@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.niit.model.CartItems;
 import com.niit.model.CategoryInfo;
 import com.niit.model.ProductInfo;
 import com.niit.services.CategoryService;
@@ -78,7 +79,9 @@ model.addAttribute("product",new ProductInfo());
     		 product.setCategory_fk(c);
     		 
     	 }
-    	 if (!product.getImage().isEmpty())
+    	
+
+ 	 if (!product.getImage().isEmpty())
     	 
          {System.out.println("get image");
 			try {
@@ -87,7 +90,7 @@ model.addAttribute("product",new ProductInfo());
 				System.out.println("get image "+servletContext.getRealPath("/"));
 				// Creating the directory to store file
 				String rootPath = servletContext.getRealPath("/");
-//				String rootPath = System.getProperty("catalina.home");
+////				String rootPath = System.getProperty("catalina.home");
 				System.out.println("get image "+rootPath);
 				File dir = new File(rootPath + File.separator + "resources/images");
 				if (!dir.exists())
@@ -184,4 +187,17 @@ model.addAttribute("product",new ProductInfo());
 		 System.out.println("update product");
 	  return new ModelAndView("redirect:list");
 	 }
-}
+	 public void update( List<CartItems> cartitems)
+		{		ProductInfo product = new ProductInfo();
+				int id;
+				for(int i=0;i<cartitems.size();i++)
+				{	
+					id=cartitems.get(i).getId_fk().getId();
+					product=pservice.getRowById(id);
+					product.setQuantity(product.getQuantity()-cartitems.get(i).getQuantity());
+					System.out.println("updating");
+					pservice.updateRow(product);
+				}
+		}
+	 }
+

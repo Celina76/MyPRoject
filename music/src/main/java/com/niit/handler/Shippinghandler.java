@@ -64,38 +64,56 @@ public class Shippinghandler {
 
 	// public String ship(Shipping ship){
 	public String add(Shipping ship) {
-//		System.out.println("It is entering into the shipping address");
-//		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//		String username = auth.getName();
-//
-//		List<UserInfo> userDetail = u.getUserByName(username);
-//		System.out.println("It is entering into the shipping address block");
-//
-//		for (int i = 0; i < userDetail.size(); i++) {
-//			System.out.println("It is entering into block which is to add user id");
-//			ship.setUser(userDetail.get(i));
-//
-//		}
-//		System.out.println("added");
-//		sss.add(ship);
-//		return " ";
-//
-//	}
-	 System.out.println("celina");
-	 String username;
-	 Authentication auth =
-	 SecurityContextHolder.getContext().getAuthentication();
-	 String name = auth.getName();
-	 HttpSession ses=req.getSession();
-	 ses.setAttribute("u", name);
-	 username=(String)ses.getAttribute("u");
-	 UserInfo user=new UserInfo();
-	 user.setUsername(username);
-	 ship.setUser(user);
-	 int id=ship.getS_id();
-	 sss.add(ship);
-	 System.out.println("celina1");
-	 return "success";
-	 }
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	
+		System.out.println("It is entering into the shipping address");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String username = auth.getName();
+
+		List<UserInfo> userDetail = u.getUser(username);
+		System.out.println("It is entering into the shipping address block");
+
+		for (int i = 0; i < userDetail.size(); i++) {
+			System.out.println("It is entering into block which is to add user id");
+			ship.setUser(userDetail.get(i));
+
+		}
+		System.out.println("added");
+		sss.add(ship);
+		System.out.println("saved");
+		return " ";
+
+	}
+//	 System.out.println("celina");
+//	 String username;
+//	 Authentication auth =
+//	 SecurityContextHolder.getContext().getAuthentication();
+//	 String name = auth.getName();
+//	 HttpSession ses=req.getSession();
+//	 ses.setAttribute("u", name);
+//	 username=(String)ses.getAttribute("u");
+//	 UserInfo user=new UserInfo();
+//	 user.setUsername(username);
+//	 ship.setUser(user);
+//	 int id=ship.getS_id();
+//	 sss.add(ship);
+//	 System.out.println("celina1");
+//	 return "success";
+//	 }
 
 }
